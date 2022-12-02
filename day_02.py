@@ -3,13 +3,13 @@
 # but after looking into it more, no, mapping all inputs to all outputs directly really seems optimal
 
 shape_scores = {"rock": 1, "paper": 2, "scissors": 3}
-result_scores = {"loss":  0, "tie": 3, "win": 6}
+result_scores = {"loss": 0, "tie": 3, "win": 6}
 
 mapping_1 = {
     "A": {  # rock
         "X": ("rock", "tie"),
         "Y": ("paper", "win"),
-        "Z": ("scissors",  "loss"),
+        "Z": ("scissors", "loss"),
     },
     "B": {  # paper
         "X": ("rock", "loss"),
