@@ -1,3 +1,7 @@
+# Day 2
+# this day really seems like it could be done better at first glance
+# but after looking into it more, no, mapping all inputs to all outputs directly really seems optimal
+
 shape_scores = {"rock": 1, "paper": 2, "scissors": 3}
 result_scores = {"loss":  0, "tie": 3, "win": 6}
 
@@ -50,5 +54,5 @@ with open("inputs/day_02.txt", "r") as f:
         result_2, shape_2 = mapping_2[left][right]
         score_sum_2 += shape_scores[shape_2] + result_scores[result_2]
 
-print(score_sum_1)
-print(score_sum_2)
+print("Part 1:", score_sum_1)
+print("Part 2:", score_sum_2)
