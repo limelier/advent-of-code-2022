@@ -5,32 +5,40 @@ def priority(item):
     return string.ascii_letters.index(item) + 1
 
 
-part1_sum = 0
-part2_sum = 0
+# part 1 - add up priorities of items that appear in both 1st and 2nd half of backpacks
+def part_1(rucksack):
+    split_point = len(rucksack) // 2
+    first_compartment_items = set(rucksack[:split_point])
+    second_compartment_items = set(rucksack[split_point:])
+    common = set.intersection(first_compartment_items, second_compartment_items).pop()
+    return priority(common)
 
-group_of_three = []
-with open("inputs/day_03.txt", "r") as f:
-    for line in f.readlines():
-        line = line.strip()
 
-        # part 1
-        split_point = len(line) // 2
+# part 2 - add up priorities of common item in every group of 3 rucksacks
+def part_2(rucksacks):
+    badge = set.intersection(*rucksacks).pop()
+    return priority(badge)
 
-        first_compartment = line[:split_point]
-        second_compartment = line[split_point:]
 
-        first_compartment_items = set(first_compartment)
-        second_compartment_items = set(second_compartment)
+def main():
+    sum_1 = 0
+    sum_2 = 0
 
-        common = first_compartment_items.intersection(second_compartment_items).pop()
-        part1_sum += priority(common)
+    group_of_three = []
+    with open("inputs/day_03.txt", "r") as f:
+        for line in f.readlines():
+            rucksack = line.strip()
 
-        # part 2
-        group_of_three.append(set(line))
-        if len(group_of_three) == 3:
-            badge = set.intersection(*group_of_three).pop()
-            part2_sum += priority(badge)
-            group_of_three = []
+            sum_1 += part_1(rucksack)
 
-print("Part 1:", part1_sum)
-print("Part 2:", part2_sum)
+            group_of_three.append(set(rucksack))
+            if len(group_of_three) == 3:
+                sum_2 += part_2(group_of_three)
+                group_of_three = []
+
+    print("Part 1:", sum_1)
+    print("Part 2:", sum_2)
+
+
+if __name__ == '__main__':
+    main()
