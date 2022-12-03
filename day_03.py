@@ -10,7 +10,7 @@ def part_1(rucksack):
     split_point = len(rucksack) // 2
     first_compartment_items = set(rucksack[:split_point])
     second_compartment_items = set(rucksack[split_point:])
-    common = set.intersection(first_compartment_items, second_compartment_items).pop()
+    common = (first_compartment_items & second_compartment_items).pop()
     return priority(common)
 
 
