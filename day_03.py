@@ -1,8 +1,9 @@
-import string
-
-
-def priority(item):
-    return string.ascii_letters.index(item) + 1
+# return priority for letters; other inputs cause undefined behaviour
+def priority(item: str):
+    if item.islower():
+        return ord(item) - ord('a') + 1
+    else:
+        return ord(item) - ord('A') + 27
 
 
 # part 1 - add up priorities of items that appear in both 1st and 2nd half of backpacks
