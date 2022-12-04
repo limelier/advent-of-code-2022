@@ -1,11 +1,14 @@
-def contains(bigger_range, smaller_range):
-    return bigger_range[0] <= smaller_range[0] and bigger_range[1] >= smaller_range[1]
+def contains(bigger, smaller):
+    return bigger[0] <= smaller[0] and smaller[1] <= bigger[1]
 
 
 def intersects(range1, range2):
-    return range1[0] <= range2[0] <= range1[1] \
-        or range1[0] <= range2[1] <= range1[1] \
-        or contains(range2, range1)
+    # 2 ranges intersect if neither:
+    #   range1 is wholly after range2 (range2[1] < range1[0])
+    #   range2 is wholly after range1 (range1[1] < range2[0])
+
+    #      range1 not after range2    range2 not after range1
+    return range1[0] <= range2[1] and range2[0] <= range1[1]
 
 
 count_contains = 0
@@ -22,6 +25,5 @@ with open("inputs/day_04.txt", "r") as f:
             count_intersections += 1
 
 
-print(count_contains)
-print(count_intersections)
-
+print("Part 1:", count_contains)
+print("Part 2:", count_intersections)
