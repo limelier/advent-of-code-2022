@@ -13,7 +13,6 @@ def intersects(section1: section, section2: section):
     # -> section1 not after section2 AND section2 not after section1
     return section1[0] <= section2[1] and section2[0] <= section1[1]
 
-
 def main():
     count_contains = 0
     count_intersections = 0
