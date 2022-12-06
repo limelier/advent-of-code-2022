@@ -3,8 +3,11 @@ from collections import deque
 queue = deque()
 
 
-# insert new into queue, pop first if over target, and return whether every element in queue unique
 def insert_into_queue(new: str, target: int) -> bool:
+    """
+    Add ``new`` element to queue, pop oldest if over ``target`` length, and return ``True`` if queue is ``target``
+    distinct items
+    """
     should_check_all = True
     # simple preliminary check; avoid complicated check until this passes
     if new in queue:
