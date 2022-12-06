@@ -1,27 +1,44 @@
-last_4 = []
-done_4 = False
-last_14 = []
+from collections import deque
 
-with open("inputs/day_06.txt", "r") as f:
-    i = 0
-    while True:
-        i += 1
+queue = deque()
 
-        char = f.read(1)
-        if not char:
-            break
 
-        if not done_4:
-            last_4.append(char)
-            if len(last_4) > 4:
-                last_4.pop(0)
-            if len(set(last_4)) == 4:
-                print(i)
-                done_4 = True
+# insert new into queue, pop first if over target, and return whether every element in queue unique
+def insert_into_queue(new: str, target: int) -> bool:
+    should_check_all = True
+    # simple preliminary check; avoid complicated check until this passes
+    if new in queue:
+        should_check_all = False
 
-        last_14.append(char)
-        if len(last_14) > 14:
-            last_14.pop(0)
-        if len(set(last_14)) == 14:
-            print(i)
-            break
+    queue.append(new)
+    if len(queue) > target:
+        queue.popleft()
+
+    return len(queue) == target \
+        and should_check_all \
+        and len(set(queue)) == target
+
+
+def main():
+    done_4 = False
+
+    with open("inputs/day_06.txt", "r") as f:
+        i = 0
+        while True:
+            i += 1
+
+            char = f.read(1)
+            if not char:  # EOF
+                break
+
+            if not done_4:
+                if insert_into_queue(char, 4):
+                    print(f"Part 1: {i} - {''.join(queue)}")
+                    done_4 = True
+            elif insert_into_queue(char, 14):
+                print(f"Part 2: {i} - {''.join(queue)}")
+                break
+
+
+if __name__ == '__main__':
+    main()
