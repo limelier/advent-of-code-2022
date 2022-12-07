@@ -50,7 +50,6 @@ def main():
 
     working_dir = None
     with open("inputs/day_07/day_07.txt", "r") as f:
-        # with open("inputs/day_07/example.txt", "r") as f:
         for line in f.readlines():
             match line.strip().split():
                 case ["$", "cd", "/"]:
