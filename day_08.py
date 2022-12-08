@@ -3,8 +3,9 @@ from functools import reduce
 from operator import mul
 from typing import Iterable
 
+# COMMON FOR PART 1 AND 2 ##############################################################
+
 input_lines = open("inputs/day_08/day_08.txt").readlines()
-# input_lines = open("inputs/day_08/example.txt").readlines()
 tree_map = [[int(c) for c in line.strip()] for line in input_lines]
 
 rows = len(tree_map)
@@ -31,6 +32,41 @@ def trees_to_edge(row: int, col: int, direction: Direction) -> Iterable[int]:
             return (tree_map[row][c] for c in range(col + 1, cols))
 
 
+def trees_visible(row: int, col: int, direction: Direction) -> int:
+    """Count the number of trees visible from the tree at the given ``row`` and ``col``"""
+    return count_visible(tree_map[row][col], trees_to_edge(row, col, direction))
+
+
+def all_trees_visible(row: int, col: int) -> dict[Direction, int]:
+    """Get count of trees visible in all 4 directions."""
+    return dict((direction, trees_visible(row, col, direction)) for direction in Direction)
+
+
+# PART 1 ##############################################################
+
+def part_1() -> int:
+    """Get the number of trees in the forest that are visible from outside it."""
+    return len([
+        # print(row, col, tree_map[row][col])
+        (row, col)
+        for row in range(1, rows - 1)
+        for col in range(1, cols - 1)
+        if visible_from_outside(row, col)
+    ]) + 2 * rows + 2 * (cols - 2)
+
+
+def outside_visible(row: int, col: int, direction: Direction) -> bool:
+    """Check if a tree at the given coordinates can 'see' the outside in the given direction."""
+    return all(tree < tree_map[row][col] for tree in trees_to_edge(row, col, direction))
+
+
+def visible_from_outside(row: int, col: int) -> bool:
+    """Check if a tree at the given coordinates is visible from the outside."""
+    return any(outside_visible(row, col, direction) for direction in Direction)
+
+
+# PART 2 ##############################################################
+
 def count_visible(origin_tree: int, line_of_trees: Iterable[int]) -> int:
     """
     Count the number of trees in the line, starting from 0, visible from the origin tree.
@@ -45,44 +81,27 @@ def count_visible(origin_tree: int, line_of_trees: Iterable[int]) -> int:
     return i + 1
 
 
-def trees_visible(row: int, col: int, direction: Direction) -> int:
-    """Count the number of trees visible from the tree at the given ``row`` and ``col``"""
-    return count_visible(tree_map[row][col], trees_to_edge(row, col, direction))
-
-
-def all_trees_visible(row: int, col: int) -> dict[Direction, int]:
-    """Return count of trees visible in all 4 directions."""
-    return dict((direction, trees_visible(row, col, direction)) for direction in Direction)
-
-
-def visible_from_outside(row: int, col: int) -> bool:
-    tree = tree_map[row][col]
-    return all(tree_map[r][col] < tree for r in range(0, row)) \
-        or all(tree_map[r][col] < tree for r in range(row + 1, rows)) \
-        or all(tree_map[row][c] < tree for c in range(0, col)) \
-        or all(tree_map[row][c] < tree for c in range(col + 1, cols))
-
-
 def scenic_score(row: int, col: int) -> int:
+    """Get the 'scenic score' of the tree at the given coordinates."""
     return reduce(mul, all_trees_visible(row, col).values())
 
 
-def main():
-    num_visible = len([
-        # print(row, col, tree_map[row][col])
-        (row, col)
-        for row in range(1, rows - 1)
-        for col in range(1, cols - 1)
-        if visible_from_outside(row, col)
-    ]) + 2 * rows + 2 * (cols - 2)
-    print("Part 1:", num_visible)
+def part_2() -> int:
+    """Get the highest 'scenic score' in the forest."""
 
-    best_scenic_score = max(
+    # no need to consider outside trees, they cannot win over inside ones
+    return max(
         scenic_score(row, col)
         for row in range(1, rows - 1)
         for col in range(1, cols - 1)
     )
-    print("Part 2:", best_scenic_score)
+
+
+# COMMON AGAIN ############################################################
+
+def main():
+    print("Part 1:", part_1())
+    print("Part 2:", part_2())
 
 
 if __name__ == '__main__':
