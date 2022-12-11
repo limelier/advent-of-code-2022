@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from functools import reduce
+from operator import mul
 from typing import Callable
 from itertools import groupby
 
@@ -48,12 +50,17 @@ def simulate_monkeys(monkeys: list[Monkey], rounds: int, do_division: bool) -> i
 
     print_monkeys(monkeys)
 
+    divisor_product = reduce(mul, (monkey.test_divisor for monkey in monkeys))
+    print(f"The product of divisors is {divisor_product}")
+
     for rnd in range(1, rounds + 1):
         for monkey in monkeys:
             for item in monkey.items:
                 new_worry = monkey.operation(item)
                 if do_division:
                     new_worry //= 3
+                elif new_worry > divisor_product:
+                    new_worry %= divisor_product
                 target_idx = monkey.true_monkey_index \
                     if (new_worry % monkey.test_divisor == 0) \
                     else monkey.false_monkey_index
@@ -72,8 +79,8 @@ def main():
     monkeys = read_monkeys()
 
     # uncomment one (part 2 doesn't actually work lmao):
-    result = simulate_monkeys(monkeys, 20, True)  # part 1
-    # result = simulate_monkeys(monkeys, 10000, False)  # part 2
+    # result = simulate_monkeys(monkeys, 20, True)  # part 1
+    result = simulate_monkeys(monkeys, 10000, False)  # part 2
 
     print()
     print("Result:", result)
