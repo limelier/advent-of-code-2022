@@ -25,7 +25,6 @@ class Monkey:
 
 def read_monkeys():
     input_lines = (line.strip() for line in open("inputs/day_11/day_11.txt").readlines())
-    # input_lines = (line.strip() for line in open("inputs/day_11/example.txt").readlines())
     input_blocks = [
         list(group)
         for k, group in groupby(input_lines, lambda line: line == "")
@@ -42,6 +41,7 @@ def print_monkeys(monkeys: list[Monkey]):
 def simulate_monkeys(monkeys: list[Monkey], rounds: int, do_division: bool) -> int:
     """
     Simulate the monkeys and return the level of monkey business.
+
     :param monkeys: the list of monkeys before the first round
     :param rounds: how many rounds to go for
     :param do_division: whether to // 3 worry levels after applying operations
