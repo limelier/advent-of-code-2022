@@ -78,7 +78,7 @@ def simulate_monkeys(monkeys: list[Monkey], rounds: int, do_division: bool) -> i
 def main():
     monkeys = read_monkeys()
 
-    # uncomment one (part 2 doesn't actually work lmao):
+    # uncomment one:
     # result = simulate_monkeys(monkeys, 20, True)  # part 1
     result = simulate_monkeys(monkeys, 10000, False)  # part 2
 
