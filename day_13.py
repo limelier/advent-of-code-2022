@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ast import literal_eval
 from enum import Enum
 from functools import cmp_to_key
 from typing import Union
@@ -51,7 +52,7 @@ def main():
         for line in f.readlines():
             if line.isspace():
                 continue
-            current_pair.append(eval(line.strip()))
+            current_pair.append(literal_eval(line.strip()))
 
             if len(current_pair) == 2:
                 packet_pairs.append((current_pair[0], current_pair[1]))
